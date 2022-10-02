@@ -163,4 +163,15 @@ public class PotionService : IPotionService
             .ToListAsync();
     }
 
+    private bool PotionIsReplica(Potion newPotion)
+    {
+        return _context.Recipes
+            .Include(recipe => recipe.Ingredients)
+            .AsEnumerable()
+            .Any(recipe => recipe.Ingredients
+                .Select(ingredient => ingredient.Name)
+                .OrderBy(x => x)
+                .SequenceEqual(newPotion.Ingredients.Select(ingredient => ingredient.Name).OrderBy(y => y)));
+    }
+
 }
