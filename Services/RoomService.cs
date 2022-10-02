@@ -32,5 +32,12 @@ public class RoomService : IRoomService
             .FirstOrDefaultAsync(room => room.Id == roomId);
     }
 
+    public async Task DeleteRoom(long id)
+    {
+        var room = await GetRoom(id);
+        _context.Rooms.Remove(room);
+        await _context.SaveChangesAsync();
+    }
+
     }
 }
