@@ -95,4 +95,19 @@ public class PotionService : IPotionService
             .ToListAsync();
     }
 
+    public async Task<Potion> AddBrewPotion(Student student)
+    {
+        var potion = new Potion()
+        {
+            Brewer = _context.Students.FirstOrDefault(student1 => student1.Id == student.Id),
+            BrewingStatus = BrewingStatus.Brew,
+            Ingredients = new HashSet<Ingredient>()
+        };
+
+        var potionEntity = _context.Potions.Add(potion).Entity;
+        await _context.SaveChangesAsync();
+
+        return potionEntity;
+    }
+
 }
