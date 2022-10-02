@@ -50,4 +50,10 @@ public class PotionService : IPotionService
 
         return potion;
     }
+
+    public async Task<Potion> GetPotion(long potionId)
+    {
+        return await _context.Potions.FirstOrDefaultAsync(potion => potion.Id == potionId);
+    }
+
 }
