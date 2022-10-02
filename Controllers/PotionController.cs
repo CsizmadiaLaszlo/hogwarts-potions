@@ -27,5 +27,16 @@ namespace HogwartsPotions.Controllers
             return Ok(potions);
         }
         
+        [HttpPost]
+        public async Task<ActionResult> AddPotion([FromBody] Potion potion)
+        {
+            var createdPotion = await _potionService.AddPotion(potion);
+            if (createdPotion == null)
+            {
+                return NotFound();
+            }
+            return Created("Potion", createdPotion);
+        }
+        
     }
 }
