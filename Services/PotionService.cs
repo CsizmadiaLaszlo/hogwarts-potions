@@ -68,4 +68,17 @@ public class PotionService : IPotionService
         await _context.SaveChangesAsync();
     }
 
+    public async Task<List<Potion>> GetAllPotion()
+    {
+        return await _context.Potions
+            .Include(potion => potion.Ingredients)
+            .Include(potion => potion.Brewer)
+            .Include(potion => potion.Recipe)
+            .AsSplitQuery()
+            .Include(potion => potion.Recipe.Ingredients)
+            .Include(potion => potion.Recipe.Brewer)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
 }
