@@ -63,5 +63,12 @@ public class RoomService : IRoomService
             .ToListAsync();
     }
 
+    public async Task<List<Room>> GetAvailableRooms()
+    {
+        return await _context.Rooms
+            .Include(room => room.Residents)
+            .Where(room => room.Capacity > room.Residents.Count)
+            .AsNoTracking()
+            .ToListAsync();
     }
 }
