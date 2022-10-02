@@ -30,6 +30,7 @@ namespace HogwartsPotions
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
             services.AddScoped<IRoomService, RoomService>();
+            services.AddScoped<IPotionService, PotionService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
