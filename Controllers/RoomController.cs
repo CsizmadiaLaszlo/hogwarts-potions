@@ -28,5 +28,12 @@ namespace HogwartsPotions.Controllers
             return Ok(rooms);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> AddRoom([FromBody] Room room)
+        {
+            await _roomService.AddRoom(room);
+            return CreatedAtAction("AddRoom", room);
+        }
+
     }
 }
