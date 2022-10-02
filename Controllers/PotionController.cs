@@ -61,5 +61,17 @@ namespace HogwartsPotions.Controllers
             return Created("Potion", potion);
         }
         
+        [HttpPut]
+        [Route("brew/{id:long}")]
+        public async Task<ActionResult> BrewPotion(long id, [FromBody] Ingredient ingredient)
+        {
+            var potion = await _potionService.BrewPotion(id, ingredient);
+            if (potion == null)
+            {
+                return BadRequest();
+            }
+            return Created("Potion", potion);
+        }
+        
     }
 }
