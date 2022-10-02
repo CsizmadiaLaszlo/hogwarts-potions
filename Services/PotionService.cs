@@ -174,4 +174,15 @@ public class PotionService : IPotionService
                 .SequenceEqual(newPotion.Ingredients.Select(ingredient => ingredient.Name).OrderBy(y => y)));
     }
 
+    private Recipe GetRecipeByIngredients(HashSet<Ingredient> ingredients)
+    {
+        return _context.Recipes
+            .Include(recipe => recipe.Ingredients)
+            .AsEnumerable()
+            .FirstOrDefault(recipe => recipe.Ingredients
+                .Select(ingredient => ingredient.Name)
+                .OrderBy(x => x)
+                .SequenceEqual(ingredients.Select(ingredient => ingredient.Name).OrderBy(y => y)));
+    }
+
 }
