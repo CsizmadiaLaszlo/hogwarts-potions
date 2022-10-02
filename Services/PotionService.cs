@@ -185,4 +185,15 @@ public class PotionService : IPotionService
                 .SequenceEqual(ingredients.Select(ingredient => ingredient.Name).OrderBy(y => y)));
     }
 
+    private void AddDiscoveryRecipeToPotion(Potion potion)
+    {
+        var numberOfDiscovery = _context.Recipes.Count(recipe => recipe.Brewer.Name == potion.Brewer.Name);
+
+        potion.Recipe = new Recipe()
+        {
+            Brewer = potion.Brewer,
+            Name = $"{potion.Brewer!.Name}'s discovery #{numberOfDiscovery + 1}",
+            Ingredients = potion.Ingredients,
+        };
+    }
 }
