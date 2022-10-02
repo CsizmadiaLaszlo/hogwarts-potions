@@ -35,5 +35,16 @@ namespace HogwartsPotions.Controllers
             return CreatedAtAction("AddRoom", room);
         }
 
+        [HttpGet("{id:long}")]
+        public async Task<ActionResult<Room>> GetRoomById(long id)
+        {
+            var room = await _roomService.GetRoom(id);
+            if (room == null)
+            {
+                return NotFound();
+            }
+            return Ok(room);
+        }
+
     }
 }
