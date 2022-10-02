@@ -110,4 +110,42 @@ public class PotionService : IPotionService
         return potionEntity;
     }
 
+    public async Task<Potion> BrewPotion(long potionId, Ingredient ingredient)
+    {
+        var potion = await _context.Potions
+            .Include(potion1 => potion1.Brewer)
+            .Include(potion1 => potion1.Ingredients)
+            .FirstOrDefaultAsync(potion1 => potion1.Id == potionId);
+
+        if (potion is null || potion.Ingredients.Count >= 5)
+        {
+            return null;
+        }
+
+        var newIngredient = _context.Ingredients
+            .FirstOrDefault(ingredient1 => ingredient1.Name == ingredient.Name);
+        
+        potion.Ingredients.Add(newIngredient ?? ingredient);
+
+        if (potion.Ingredients.Count >= MaxIngredientsForPotions)
+        {
+            var isReplica = PotionIsReplica(potion);
+            potion.BrewingStatus = isReplica ? BrewingStatus.Replica : BrewingStatus.Discovery;
+
+            if (isReplica)
+            {
+                potion.Recipe = GetRecipeByIngredients(potion.Ingredients);
+            }
+            else
+            {
+                AddDiscoveryRecipeToPotion(potion);
+            }
+        }
+
+        var updatedPotion = _context.Potions.Update(potion).Entity;
+        await _context.SaveChangesAsync();
+
+        return updatedPotion;
+    }
+
 }
