@@ -56,4 +56,10 @@ public class PotionService : IPotionService
         return await _context.Potions.FirstOrDefaultAsync(potion => potion.Id == potionId);
     }
 
+    public async Task DeletePotion(long id)
+    {
+        var potion = await GetPotion(id);
+        _context.Potions.Remove(potion);
+    }
+
 }
