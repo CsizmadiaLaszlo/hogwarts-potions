@@ -17,5 +17,16 @@ namespace HogwartsPotions.Controllers
             _roomService = roomService;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<List<Room>>> GetAllRooms()
+        {
+            var rooms = await _roomService.GetAllRooms();
+            if (rooms == null)
+            {
+                return NotFound();
+            }
+            return Ok(rooms);
+        }
+
     }
 }
