@@ -53,5 +53,15 @@ public class RoomService : IRoomService
             .ToListAsync();
     }
 
+    public async Task<List<Room>> GetRoomsForRatOwners()
+    {
+        return await _context.Rooms
+            .Include(room => room.Residents)
+            .Where(room =>
+                !room.Residents.Any(resident => resident.PetType == PetType.Cat || resident.PetType == PetType.Owl))
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
     }
 }
