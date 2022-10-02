@@ -62,4 +62,10 @@ public class PotionService : IPotionService
         _context.Potions.Remove(potion);
     }
 
+    public async Task UpdatePotion(Potion potion)
+    {
+        _context.Potions.Update(potion);
+        await _context.SaveChangesAsync();
+    }
+
 }
