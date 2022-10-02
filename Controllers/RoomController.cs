@@ -57,5 +57,12 @@ namespace HogwartsPotions.Controllers
             return Ok(updatedRoom);
         }
 
+        [HttpDelete("{id:long}")]
+        public async Task<IActionResult> DeleteRoomById(long id)
+        {
+            await _roomService.DeleteRoom(id);
+            return Ok();
+        }
+
     }
 }
