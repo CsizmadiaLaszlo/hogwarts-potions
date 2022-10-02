@@ -81,4 +81,18 @@ public class PotionService : IPotionService
             .ToListAsync();
     }
 
+    public async Task<List<Potion>> GetAllPotionByStudent(long id)
+    {
+        return await _context.Potions
+            .Where(potion => potion.Brewer.Id == id)
+            .Include(potion => potion.Ingredients)
+            .Include(potion => potion.Brewer)
+            .Include(potion => potion.Recipe)
+            .AsSplitQuery()
+            .Include(potion => potion.Recipe.Brewer)
+            .Include(potion => potion.Recipe.Ingredients)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
 }
