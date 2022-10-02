@@ -45,5 +45,13 @@ public class RoomService : IRoomService
         await _context.SaveChangesAsync();
     }
 
+    public async Task<List<Room>> GetAllRooms()
+    {
+        return await _context.Rooms
+            .Include(room => room.Residents)
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
     }
 }
