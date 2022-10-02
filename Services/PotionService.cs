@@ -148,4 +148,19 @@ public class PotionService : IPotionService
         return updatedPotion;
     }
 
+    public async Task<List<Recipe>> GetSimilarRecipes(long potionId)
+    {
+        var potion = await _context.Potions
+            .Include(potion1 => potion1.Ingredients)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(potion1 => potion1.Id == potionId);
+        var ingredientNames = potion!.Ingredients.Select(ingredient => ingredient.Name);
+        return await _context.Recipes
+            .Include(recipe => recipe.Ingredients)
+            .Where(recipe => recipe.Ingredients
+                .Select(ingredient => ingredient.Name)
+                .Any(s => ingredientNames.Contains(s)))
+            .ToListAsync();
+    }
+
 }
